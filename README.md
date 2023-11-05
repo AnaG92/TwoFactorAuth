@@ -1,66 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Context
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+The premisses for this project are:
+- The user exists in the database
+- The user has a unique username
 
-## About Laravel
+The project is a set of four views, where you will be able to create a TOTP secret key and use it as part of a two-factor authentication process.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The first view will allow you to set a label against your username, if this username is not set in database or is not correct, the view won't let you continue to the next step.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+From there we will generate the TOTP secret, combine this with the label and the username into a QR code that the user can scan for a TOTP 6 digit code.  
+When the user is ready to insert the code, the next page can be accessed where the username and code can be entered, the user will be verified based on the username and the code will be verified.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Validation success will result in the success page, indicating success. Otherwise the view will warn the user that the code entered is not correct.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Implementation  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+I have implemented this feature by using the Fortify package from the Laravel ecosystem.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+In terms of styles I've added Boostrap 5 to be able to add some basic styling as it's the one I have the most experience with.
 
-## Laravel Sponsors
+I chose the Laravel Fortify package to implement the two-factor authentication over the alternatives because it's part of Laravel's ecosystem.  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+The drawback of installing this package is that I haven't used all it's features or potential, because I have not built the full user registration and login systems.  
+If I had more time I would have added a full login system with two-factor authentication, which would have used more elements of the package.
 
-### Premium Partners
+I've kept the database logic in a repository, this means if this project is extended in the future and I decide to use a different database I would be able to make the changes in just one place.  
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+To keep the business logic separated from the controller, I have put all interactions with the Fortify package in a service. This also helps to be able to fake some data for the tests.
 
-## Contributing
+I have added some feature tests to check the request cycle responds as expected.  
+And added some unit tests for the things that could not be tested with a feature test.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Setup  
 
-## Code of Conduct
+#### Requirements
+You will need the following in order to run this project:
+- Git
+- PHP8
+- Composer
+- Node
+- NPM
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Clone the repository and setup env file
+- Run `git clone git@github.com:AnaGema/upmind.git`
+- Copy `.env.example` to `.env`
+- Ensure the `DB_CONNECTION` is set to `sqlite`
+- Ensure the `DB_DATABASE` is the full path to the sqlite file
 
-## Security Vulnerabilities
+#### Install dependencies
+- Run `composer install` to install all composer packages and dependencies.
+- Run `npm install` to install all JavaScript packages and dependencies.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Run  migrations and seed data
+- Run `php artisan migrate:fresh --seed` this will make sure all your migrations are in place and the seeders are ran.
 
-## License
+#### Running the tests
+- Run `php artisan test`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Serve the application
+- Run `npm run build` this will compile the frontend.
+- Run `php artisan serve` this will start the server and tell you where is running.
+- Visit the URL shown in the terminal.
+
+#### Using the application
+A valid username to use is `upmind-user`.
