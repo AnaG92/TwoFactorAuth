@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TwoFaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LoginController::class, 'index'])->name('index');
-Route::post('/', [LoginController::class, 'store'])->name('store');
+Route::get('/', [TwoFaController::class, 'index'])->name('index');
+Route::post('/', [TwoFaController::class, 'store'])->name('store');
+Route::get('/code', [TwoFaController::class, 'setCode'])->name('setCode');
+Route::post('/code/validate', [TwoFaController::class, 'validateCode'])->name('validateCode');
+Route::get('/code/{id}/success', [TwoFaController::class, 'successCode'])->name('successCode');

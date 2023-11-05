@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
          User::factory()->create([
              'name'         => 'Upmind User',
              'email'        => 'user@upmind.com',
-             'username'     => 'test username',
+             'username'     => 'upmind-user',
          ]);
     }
 }

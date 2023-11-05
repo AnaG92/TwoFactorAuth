@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @property int $id
  * @property string $name
  * @property string $email
  * @property string $password

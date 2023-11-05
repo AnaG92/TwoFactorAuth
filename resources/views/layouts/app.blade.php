@@ -26,7 +26,9 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-2">
-                            <img src="{{ asset('images/icon.png') }}" width="60px" height="60px" alt="company icon"/>
+                            <a href="/">
+                                <img src="{{ asset('images/icon.png') }}" width="60px" height="60px" alt="company icon"/>
+                            </a>
                         </div>
                         <div class="col-10"></div>
                     </div>
