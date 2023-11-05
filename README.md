@@ -53,13 +53,16 @@ You will need the following in order to run this project:
 - Run `npm install` to install all JavaScript packages and dependencies.
 
 #### Run  migrations and seed data
-- Run `php artisan migrate:fresh --seed` this will make sure all your migrations are in place and the seeders are ran.
+- Run `php artisan migrate` this will make sure the sqlite file exists and all your migrations are in place.
+  - When asked if you want to create the upmind.sqlite file, select yes.
+- Run `php artisan db:seed` this will make sure all your migrations are in place and the seeders are ran.
 
-#### Running the tests
-- Run `php artisan test`
-
-#### Serve the application
+#### Generate the app key & build assets
+- Run `php artisan key:generate`
 - Run `npm run build` this will compile the frontend.
+
+#### Serve the application and run tests
+- Run `php artisan test`
 - Run `php artisan serve` this will start the server and tell you where is running.
 - Visit the URL shown in the terminal.
 
